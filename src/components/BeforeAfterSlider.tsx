@@ -1,121 +1,95 @@
-import { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 
-interface BeforeAfterSliderProps {
-  beforeImage?: string;
-  afterImage?: string;
-  beforeLabel?: string;
-  afterLabel?: string;
-}
-
-const BeforeAfterSlider = ({
-  beforeImage = "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&auto=format&fit=crop&q=80",
-  afterImage = "https://images.unsplash.com/photo-1581585744363-f7e5c9af5f76?w=800&auto=format&fit=crop&q=80",
-  beforeLabel = "Antes",
-  afterLabel = "Después",
-}: BeforeAfterSliderProps) => {
+export const BeforeAfterSlider = () => {
   const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
 
-  const handleMove = (clientX: number) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const percentage = Math.min(Math.max((x / rect.width) * 100, 0), 100);
-    setSliderPosition(percentage);
+  const handleMove = (event: MouseEvent | TouchEvent) => {
+    if (!isDragging || !containerRef.current) return;
+
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+
+    let position = ((clientX - containerRect.left) / containerRect.width) * 100;
+    position = Math.max(0, Math.min(100, position));
+
+    setSliderPosition(position);
   };
 
-  const handleMouseDown = () => {
-    isDragging.current = true;
-  };
+  const handleMouseDown = () => setIsDragging(true);
+  const handleMouseUp = () => setIsDragging(false);
 
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
+  useEffect(() => {
+    const handleGlobalMove = (e: MouseEvent | TouchEvent) => handleMove(e);
+    const handleGlobalUp = () => handleMouseUp();
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    handleMove(e.clientX);
-  };
+    if (isDragging) {
+      document.addEventListener('mousemove', handleGlobalMove);
+      document.addEventListener('mouseup', handleGlobalUp);
+      document.addEventListener('touchmove', handleGlobalMove, { passive: false });
+      document.addEventListener('touchend', handleGlobalUp);
+    }
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    handleMove(e.touches[0].clientX);
-  };
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMove);
+      document.removeEventListener('mouseup', handleGlobalUp);
+      document.removeEventListener('touchmove', handleGlobalMove);
+      document.removeEventListener('touchend', handleGlobalUp);
+    };
+  }, [isDragging]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full my-8 select-none" ref={containerRef}>
+      <div className="flex items-center gap-2 mb-4 px-1">
+        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Resultados Reales</span>
+      </div>
+
       <div
-        ref={containerRef}
-        className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden cursor-ew-resize select-none shadow-xl"
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onTouchMove={handleTouchMove}
+        className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden cursor-ew-resize shadow-2xl border border-white/20 group touch-none"
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleMouseDown}
       >
-        {/* After Image (Background) */}
-        <div className="absolute inset-0">
-          <img
-            src={afterImage}
-            alt={afterLabel}
-            className="w-full h-full object-cover"
-            draggable={false}
-          />
-          <span className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm text-slate-900 text-xs font-medium px-3 py-1.5 rounded-full shadow-sm">
-            {afterLabel}
-          </span>
+        {/* IMAGEN 'DESPUÉS' (Fondo) */}
+        <img
+          src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=800&auto=format&fit=crop"
+          alt="After"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        />
+        <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full z-10">
+          DESPUÉS
         </div>
 
-        {/* Before Image (Clipped) */}
+        {/* IMAGEN 'ANTES' (Recortada) */}
         <div
-          className="absolute inset-0 overflow-hidden"
-          style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+          className="absolute inset-0 w-full h-full overflow-hidden"
+          style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
         >
           <img
-            src={beforeImage}
-            alt={beforeLabel}
-            className="w-full h-full object-cover"
-            draggable={false}
+            src="https://plus.unsplash.com/premium_photo-1661775756810-82dbd209dc95?q=80&w=800&auto=format&fit=crop"
+            alt="Before"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
           />
-          <span className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm text-slate-900 text-xs font-medium px-3 py-1.5 rounded-full shadow-sm">
-            {beforeLabel}
-          </span>
+          <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full z-10">
+            ANTES
+          </div>
         </div>
 
-        {/* Slider Handle */}
-        <motion.div
-          className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_20px_rgba(0,0,0,0.3)] cursor-ew-resize z-10"
-          style={{ left: `${sliderPosition}%`, transform: "translateX(-50%)" }}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleMouseDown}
+        {/* EL MANEJADOR (Slider Handle) */}
+        <div
+          className="absolute top-0 bottom-0 w-0.5 bg-white cursor-ew-resize z-20 shadow-[0_0_20px_rgba(0,0,0,0.5)]"
+          style={{ left: `${sliderPosition}%` }}
         >
-          {/* Handle Circle */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
-            <div className="flex items-center gap-0.5">
-              <svg
-                className="w-3 h-3 text-slate-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-              <svg
-                className="w-3 h-3 text-slate-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg transform transition-transform active:scale-95">
+            <div className="flex text-slate-900">
+              <ChevronLeft size={14} className="-mr-1" />
+              <ChevronRight size={14} className="-ml-1" />
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
+      <p className="text-center text-xs text-slate-400 mt-3 font-medium">Desliza para ver la transformación</p>
     </div>
   );
 };
-
-export default BeforeAfterSlider;
