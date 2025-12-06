@@ -47,31 +47,31 @@ export const BeforeAfterSlider = () => {
       </div>
 
       <div
-        className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden cursor-ew-resize shadow-2xl border border-white/20 group touch-none"
+        className="relative w-full aspect-[4/3] rounded-xl overflow-hidden cursor-ew-resize shadow-lg border border-slate-100 group touch-none"
         onMouseDown={handleMouseDown}
         onTouchStart={handleMouseDown}
       >
-        {/* IMAGEN 'DESPUÉS' (Fondo) */}
+        {/* IMAGEN 'DESPUÉS' (Fondo) - Sonrisa Perfecta */}
         <img
-          src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=800&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80&w=800&auto=format&fit=crop"
           alt="After"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         />
-        <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full z-10">
+        <div className="absolute top-4 right-4 bg-emerald-500/90 backdrop-blur-sm text-white text-[10px] font-bold px-3 py-1 rounded-full z-10 shadow-sm">
           DESPUÉS
         </div>
 
-        {/* IMAGEN 'ANTES' (Recortada) */}
+        {/* IMAGEN 'ANTES' (Recortada) - Sonrisa con problemas (Simulada con otra imagen) */}
         <div
           className="absolute inset-0 w-full h-full overflow-hidden"
           style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
         >
           <img
-            src="https://plus.unsplash.com/premium_photo-1661775756810-82dbd209dc95?q=80&w=800&auto=format&fit=crop"
+            src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80&w=800&auto=format&fit=crop"
             alt="Before"
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none grayscale-[50%]"
           />
-          <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full z-10">
+          <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-sm text-white text-[10px] font-bold px-3 py-1 rounded-full z-10 shadow-sm">
             ANTES
           </div>
         </div>

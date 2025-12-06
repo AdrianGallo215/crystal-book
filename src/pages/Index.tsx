@@ -9,17 +9,17 @@ import {
   Lock,
   Clock,
   Phone,
-  Menu,
   Stethoscope,
   Smile,
-  Sparkles
+  Sparkles,
+  ArrowRight
 } from "lucide-react";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 import { cn } from "@/lib/utils";
 
 // --- COMPONENTES VISUALES ---
 
-// Marquee Infinito para Google Reviews (Single line, slow)
+// Marquee Infinito para Google Reviews (Slower, cleaner)
 const GoogleReviewMarquee = () => {
   const reviews = [
     { name: "Jorge L.", text: "Cero dolor, increíble.", stars: 5 },
@@ -31,11 +31,11 @@ const GoogleReviewMarquee = () => {
 
   return (
     <div className="relative flex overflow-hidden w-full py-6">
-      <div className="animate-marquee flex gap-4 whitespace-nowrap">
+      <div className="animate-marquee flex gap-4 whitespace-nowrap" style={{ animationDuration: '40s' }}>
         {[...reviews, ...reviews, ...reviews].map((review, i) => (
-          <div key={i} className="w-[260px] flex-shrink-0 bg-white border border-slate-100 p-4 rounded-xl shadow-sm flex flex-col gap-2">
+          <div key={i} className="w-[260px] flex-shrink-0 bg-white border border-slate-100 p-4 rounded-lg shadow-sm flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1 text-yellow-400">
+              <div className="flex items-center gap-1 text-yellow-500">
                 <Star size={14} fill="currentColor" />
                 <Star size={14} fill="currentColor" />
                 <Star size={14} fill="currentColor" />
@@ -44,7 +44,7 @@ const GoogleReviewMarquee = () => {
               </div>
               <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-4 h-4" />
             </div>
-            <p className="text-slate-600 text-sm italic truncate">"{review.text}"</p>
+            <p className="text-slate-700 text-sm italic truncate font-serif">"{review.text}"</p>
             <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">- {review.name}</p>
           </div>
         ))}
@@ -93,136 +93,161 @@ const Index = () => {
         )}>
 
           {/* Header */}
-          <header className="sticky top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-white/50 h-14 flex items-center justify-between px-5">
+          <header className="sticky top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 h-14 flex items-center justify-between px-5">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">D</div>
-              <h1 className="text-sm font-bold text-slate-900 tracking-tight">DENTAL<span className="text-blue-600">SANISIDRO</span></h1>
+              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-serif font-bold">D</div>
+              <h1 className="text-sm font-bold text-slate-900 tracking-tight font-sans">DENTAL<span className="text-slate-500 font-normal">SANISIDRO</span></h1>
             </div>
-            <div className="flex items-center gap-2 bg-green-50 px-2 py-1 rounded-full border border-green-100">
+            <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-[10px] font-bold text-green-700 uppercase tracking-wide">Abierto</span>
+              <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Abierto</span>
             </div>
           </header>
 
           {/* Contenido Principal */}
-          <main className="pt-6 px-5 pb-32">
+          <main className="pb-32">
 
-            {/* Hero Section */}
-            <section className="mb-10 relative">
-              {/* Static Blue Orb */}
-              <div className="absolute top-10 right-0 -z-10 bg-blue-600 opacity-15 w-64 h-64 blur-3xl rounded-full pointer-events-none"></div>
+            {/* Hero Section (Editorial Style) */}
+            <section className="relative h-[480px] w-full overflow-hidden flex flex-col justify-end pb-10 px-6">
+              {/* Background Image */}
+              <img
+                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=800&auto=format&fit=crop"
+                alt="Clinical Environment"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              {/* Overlay Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
 
-              <div className="mb-6">
-                <span className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-wider mb-3 border border-blue-100">
-                  Clínica Premium
+              {/* Content */}
+              <div className="relative z-10 text-white">
+                <span className="inline-block mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400">
+                  Clínica Dental en San Isidro
                 </span>
-                <h2 className="text-3xl font-extrabold text-slate-900 leading-[1.1] mb-3">
-                  Odontología Moderna <br /> en <span className="text-blue-600">San Isidro.</span>
+                <h2 className="text-4xl font-serif font-medium leading-tight mb-4">
+                  Transformamos <br /> sonrisas.
                 </h2>
-                <p className="text-slate-500 text-sm leading-relaxed max-w-[90%]">
-                  Tecnología avanzada y trato humano para recuperar tu sonrisa sin dolor ni estrés.
+                <p className="text-slate-200 text-sm leading-relaxed mb-6 max-w-[90%] font-light">
+                  Tecnología avanzada y trato humano para una experiencia odontológica sin estrés.
                 </p>
+
+                <div className="flex flex-col gap-3">
+                  <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-3.5 rounded-lg shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                    <MessageSquare size={18} />
+                    Agendar por WhatsApp
+                  </button>
+                  <button className="w-full bg-transparent border border-white/30 hover:bg-white/10 text-white font-medium py-3.5 rounded-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                    Ver tratamientos
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* Doctor Section (Dedicated) */}
+            <section className="px-5 py-8 bg-white">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-serif text-slate-900">Tu dentista</h3>
+                <span className="text-xs text-slate-400 font-medium">Director Clínico</span>
               </div>
 
-              {/* Doctor Profile Card (Glass) */}
-              <div className="glass-card rounded-2xl p-5 flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm flex-shrink-0">
-                  <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200" alt="Dr. Adrián" className="w-full h-full object-cover" />
+              <div className="flex items-start gap-5">
+                <div className="w-24 h-32 rounded-lg overflow-hidden shadow-md flex-shrink-0 bg-slate-100">
+                  <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=300" alt="Dr. Adrián" className="w-full h-full object-cover" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-slate-900 text-sm">Dr. Adrián Gallo</h3>
-                  <p className="text-xs text-slate-500 font-medium mb-1">Director Clínico</p>
-                  <span className="text-[10px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">COP 12345</span>
-                </div>
-                <div className="ml-auto">
-                  <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
-                    <Stethoscope size={20} />
+                <div className="flex-1 py-1">
+                  <h4 className="text-lg font-bold text-slate-900 mb-1">Dr. Adrián Gallo</h4>
+                  <p className="text-sm text-slate-500 mb-3 leading-relaxed">Especialista en rehabilitación oral y estética dental.</p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="text-[10px] bg-slate-50 text-slate-600 px-2 py-1 rounded border border-slate-100">COP 12345</span>
+                    <span className="text-[10px] bg-slate-50 text-slate-600 px-2 py-1 rounded border border-slate-100">15 Años Exp.</span>
                   </div>
                 </div>
               </div>
+            </section>
 
-              {/* Before/After Slider */}
+            {/* Before/After Section */}
+            <section className="px-5 py-8 bg-slate-50 border-t border-slate-100">
+              <div className="mb-2">
+                <h3 className="text-xl font-serif text-slate-900">Resultados reales</h3>
+                <p className="text-sm text-slate-500">Devolvemos la confianza a nuestros pacientes.</p>
+              </div>
               <BeforeAfterSlider />
-
             </section>
 
             {/* Services Grid */}
-            <section className="mb-12">
-              <div className="flex items-center justify-between mb-4 px-1">
-                <h3 className="font-bold text-slate-900">Tratamientos</h3>
-                <span className="text-xs text-blue-600 font-medium">Ver todos</span>
+            <section className="px-5 py-8 bg-white border-t border-slate-100">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-serif text-slate-900">Tratamientos</h3>
+                <button className="text-xs text-slate-900 font-bold flex items-center gap-1">
+                  Ver todos <ArrowRight size={12} />
+                </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 {/* Card 1 */}
-                <div className="glass-card p-4 rounded-2xl hover:bg-white transition-colors cursor-pointer group">
-                  <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-3 text-blue-600 group-hover:scale-110 transition-transform">
-                    <Sparkles size={20} />
-                  </div>
+                <div className="bg-white p-5 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                  <Sparkles size={24} className="text-slate-900 mb-4 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                   <h4 className="font-bold text-slate-900 text-sm mb-1">Diseño de Sonrisa</h4>
-                  <p className="text-[10px] text-slate-500">Carillas de porcelana y resina.</p>
+                  <p className="text-[11px] text-slate-500 leading-tight">Carillas y estética.</p>
                 </div>
 
                 {/* Card 2 */}
-                <div className="glass-card p-4 rounded-2xl hover:bg-white transition-colors cursor-pointer group">
-                  <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center mb-3 text-emerald-600 group-hover:scale-110 transition-transform">
-                    <Activity size={20} />
-                  </div>
+                <div className="bg-white p-5 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                  <Activity size={24} className="text-slate-900 mb-4 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                   <h4 className="font-bold text-slate-900 text-sm mb-1">Implantes</h4>
-                  <p className="text-[10px] text-slate-500">Recupera tu diente en 24h.</p>
+                  <p className="text-[11px] text-slate-500 leading-tight">Carga inmediata.</p>
                 </div>
 
                 {/* Card 3 */}
-                <div className="glass-card p-4 rounded-2xl hover:bg-white transition-colors cursor-pointer group">
-                  <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mb-3 text-purple-600 group-hover:scale-110 transition-transform">
-                    <Smile size={20} />
-                  </div>
+                <div className="bg-white p-5 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                  <Smile size={24} className="text-slate-900 mb-4 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                   <h4 className="font-bold text-slate-900 text-sm mb-1">Ortodoncia</h4>
-                  <p className="text-[10px] text-slate-500">Brackets e invisalign.</p>
+                  <p className="text-[11px] text-slate-500 leading-tight">Invisible y brackets.</p>
                 </div>
 
                 {/* Card 4 */}
-                <div className="glass-card p-4 rounded-2xl hover:bg-white transition-colors cursor-pointer group">
-                  <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center mb-3 text-orange-600 group-hover:scale-110 transition-transform">
-                    <ShieldCheck size={20} />
-                  </div>
+                <div className="bg-white p-5 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                  <ShieldCheck size={24} className="text-slate-900 mb-4 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                   <h4 className="font-bold text-slate-900 text-sm mb-1">Urgencias</h4>
-                  <p className="text-[10px] text-slate-500">Atención prioritaria hoy.</p>
+                  <p className="text-[11px] text-slate-500 leading-tight">Atención hoy mismo.</p>
                 </div>
               </div>
             </section>
 
             {/* Social Proof */}
-            <section className="mb-8">
-              <div className="flex items-center gap-2 mb-2 px-1">
-                <Star size={16} className="text-yellow-400 fill-yellow-400" />
-                <span className="text-sm font-bold text-slate-900">4.9/5 en Google Maps</span>
+            <section className="py-8 bg-slate-50 border-t border-slate-100">
+              <div className="px-5 mb-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <Star size={16} className="text-yellow-500 fill-yellow-500" />
+                  <span className="text-sm font-bold text-slate-900">4.9/5 en Google Maps</span>
+                </div>
+                <p className="text-xs text-slate-500">Lo que dicen nuestros pacientes.</p>
               </div>
               <GoogleReviewMarquee />
             </section>
 
             {/* Location */}
-            <section className="mb-8 glass-card p-5 rounded-2xl flex items-start gap-4">
-              <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0 text-slate-500">
-                <MapPin size={20} />
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-sm">Av. Conquistadores 123</h4>
-                <p className="text-xs text-slate-500 mb-2">San Isidro, Lima</p>
-                <div className="flex items-center gap-4 text-[10px] text-slate-400 font-medium">
-                  <span className="flex items-center gap-1"><Clock size={10} /> Lun-Sab: 9am - 8pm</span>
-                  <span className="flex items-center gap-1"><Phone size={10} /> (01) 222-3333</span>
+            <section className="px-5 py-8 bg-white border-t border-slate-100">
+              <div className="bg-slate-50 p-5 rounded-lg flex items-start gap-4 border border-slate-100">
+                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0 text-slate-900 border border-slate-100 shadow-sm">
+                  <MapPin size={18} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm mb-1">Visítanos</h4>
+                  <p className="text-xs text-slate-500 mb-3 leading-relaxed">Av. Conquistadores 123, San Isidro.<br />Lima, Perú.</p>
+                  <div className="flex items-center gap-4 text-[10px] text-slate-500 font-medium uppercase tracking-wide">
+                    <span className="flex items-center gap-1"><Clock size={10} /> Lun-Sab: 9am - 8pm</span>
+                  </div>
                 </div>
               </div>
             </section>
 
           </main>
 
-          {/* Footer CTA */}
+          {/* Footer CTA (Sticky) */}
           <div className="fixed bottom-6 left-4 right-4 z-50 max-w-[400px] mx-auto">
-            <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/30 active:scale-95 transition-all flex items-center justify-center gap-2 shimmer-effect overflow-hidden">
+            <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shimmer-effect overflow-hidden">
               <MessageSquare size={20} />
               Agendar por WhatsApp
             </button>
@@ -243,7 +268,7 @@ const Index = () => {
           {/* Admin Header */}
           <div className="p-6 pt-12 flex justify-between items-center bg-slate-800/50 backdrop-blur-md border-b border-white/5">
             <div>
-              <h2 className="text-lg font-bold text-white">Panel de Control</h2>
+              <h2 className="text-lg font-serif font-medium text-white">Resumen de Consultas</h2>
               <p className="text-xs text-slate-400">Dr. Adrián Gallo</p>
             </div>
             <button onClick={toggleView} className="p-2 bg-slate-800 rounded-full hover:bg-slate-700 transition-colors border border-white/10">
@@ -255,13 +280,13 @@ const Index = () => {
           <div className="flex-1 p-6 overflow-y-auto">
             {/* KPI Cards */}
             <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-slate-800/50 p-4 rounded-2xl border border-white/5">
-                <p className="text-slate-400 text-xs mb-1">Pacientes Hoy</p>
-                <h3 className="text-3xl font-bold text-blue-400">{kpi1}</h3>
+              <div className="bg-slate-800/50 p-4 rounded-lg border border-white/5">
+                <p className="text-slate-400 text-xs mb-1">Consultas Hoy</p>
+                <h3 className="text-3xl font-serif text-white">{kpi1}</h3>
               </div>
-              <div className="bg-slate-800/50 p-4 rounded-2xl border border-white/5">
-                <p className="text-slate-400 text-xs mb-1">Nuevos Leads</p>
-                <h3 className="text-3xl font-bold text-emerald-400">5</h3>
+              <div className="bg-slate-800/50 p-4 rounded-lg border border-white/5">
+                <p className="text-slate-400 text-xs mb-1">Nuevos Pacientes</p>
+                <h3 className="text-3xl font-serif text-emerald-400">5</h3>
               </div>
             </div>
 
@@ -269,13 +294,13 @@ const Index = () => {
             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Actividad Reciente</h3>
             <div className="space-y-3">
               {[1, 2, 3, 4].map((_, i) => (
-                <div key={i} className="flex items-center gap-4 bg-slate-800/30 p-3 rounded-xl border border-white/5">
-                  <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-bold text-xs">
+                <div key={i} className="flex items-center gap-4 bg-slate-800/30 p-3 rounded-lg border border-white/5">
+                  <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-serif text-xs">
                     {["MG", "JL", "CR", "Ana"][i]}
                   </div>
                   <div className="flex-1">
                     <h4 className="font-medium text-sm text-slate-200">{["María González", "Jorge Luis", "Carlos Ruiz", "Ana Torres"][i]}</h4>
-                    <p className="text-xs text-slate-500">Interesado en {["Implante", "Diseño Sonrisa", "Urgencia", "Ortodoncia"][i]}</p>
+                    <p className="text-xs text-slate-500">Consulta por {["Implante", "Diseño Sonrisa", "Urgencia", "Ortodoncia"][i]}</p>
                   </div>
                   <span className="text-[10px] text-slate-600">{i * 5 + 2} min</span>
                 </div>
